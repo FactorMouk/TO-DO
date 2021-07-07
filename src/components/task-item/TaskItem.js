@@ -4,7 +4,6 @@ import deleteBlue from "./../../assets/icons/delete-blue.png";
 
 function TaskItem(props) {
   function autoGrow(event) {
-    console.log(event);
     event.target.style.height = "5px";
     event.target.style.height = event.target.scrollHeight + 4 + "px";
   }
@@ -17,6 +16,9 @@ function TaskItem(props) {
           <input
             type="checkbox"
             disabled={props.taskType ? false : true}
+            defaultChecked={
+              props.taskType && props.taskType === "completed" ? true : false
+            }
           ></input>
           <span className="label"></span>
         </label>
@@ -32,6 +34,7 @@ function TaskItem(props) {
                 ? "Pera, tem mais uma coisa"
                 : ""
             }
+            value={props.description}
           ></textarea>
           <div className="enter-label">Enter ↵</div>
         </div>
