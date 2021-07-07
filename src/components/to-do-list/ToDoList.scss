@@ -5,13 +5,22 @@
   .title {
     font-size: 24px;
     text-align: center;
-    margin: 0px;
-    margin-bottom: 30px;
+    margin: 30px;
     color: #191847;
     line-height: 29px;
   }
   .empty-list-illust {
     width: 391px;
     height: 183px;
+    margin-bottom: 48px;
+  }
+  .sub-title {
+    color: #191847;
+    font-size: 16px;
+    text-align: left;
+    padding: 0px 28px 12px 28px;
+    line-height: 19px;
+    width: -webkit-fill-available;
+    margin: 0px;
   }
 }
