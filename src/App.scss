@@ -1,0 +1,74 @@
+.ToDoApp {
+  header {
+    background-color: #dde3e9;
+    height: 175px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    > img {
+      margin: 30px;
+    }
+  }
+  .main-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    .content {
+      position: relative;
+      bottom: 80px;
+      z-index: 10;
+      background: white;
+      width: 740px;
+      padding: 30px;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.15);
+    }
+    .background {
+      position: absolute;
+      z-index: 0;
+      display: flex;
+      justify-content: flex-end;
+      align-items: flex-end;
+      height: 100%;
+      width: 100%;
+      .back-illust1 {
+        position: absolute;
+        top: 20px;
+        left: 120px;
+        width: 100px;
+        height: 80px;
+      }
+      .back-illust2 {
+        position: relative;
+        right: 114px;
+        bottom: 25px;
+        width: 106px;
+        height: 180px;
+      }
+    }
+  }
+  footer {
+    text-align: center;
+    position: relative;
+    bottom: 80px;
+    margin-top: 20px;
+    > p {
+      margin: 10px;
+      > a {
+        color: #2d43ff;
+        text-decoration: none;
+      }
+    }
+    > :nth-child(1) {
+      font-size: 12px;
+      line-height: 14px;
+    }
+    > :nth-child(2) {
+      font-size: 10px;
+      line-height: 12px;
+    }
+  }
+}

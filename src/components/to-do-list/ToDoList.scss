@@ -1,0 +1,17 @@
+.ToDoList {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .title {
+    font-size: 24px;
+    text-align: center;
+    margin: 0px;
+    margin-bottom: 30px;
+    color: #191847;
+    line-height: 29px;
+  }
+  .empty-list-illust {
+    width: 391px;
+    height: 183px;
+  }
+}
