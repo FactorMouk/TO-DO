@@ -13,3 +13,12 @@
     margin-top: 18px;
   }
 }
+
+@media screen and (max-width: 376px) {
+  .TasksSet {
+    > p {
+      padding: 0px 25px 12px 25px;
+      margin-top: 24px;
+    }
+  }
+}

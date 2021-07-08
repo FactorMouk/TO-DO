@@ -119,3 +119,11 @@
     }
   }
 }
+
+@media screen and (max-width: 376px) {
+  .TaskItem {
+    .task {
+      padding: 8px 25px;
+    }
+  }
+}

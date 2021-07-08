@@ -21,8 +21,10 @@
       z-index: 10;
       background: white;
       width: 800px;
+      min-width: 300px;
       border-radius: 12px;
       box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.15);
+      margin: 0px 20px;
     }
     .background {
       position: absolute;
@@ -52,9 +54,9 @@
     text-align: center;
     position: relative;
     bottom: 80px;
-    margin-top: 20px;
+    margin: 20px 65px 0px 65px;
     > p {
-      margin: 10px;
+      margin: 10px 0px;
       > a {
         color: #2d43ff;
         text-decoration: none;
@@ -66,7 +68,41 @@
     }
     > :nth-child(2) {
       font-size: 10px;
-      line-height: 12px;
+      line-height: 15px;
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .ToDoApp {
+    .main-container {
+      .background {
+        .back-illust1 {
+          display: none;
+        }
+        .back-illust2 {
+          display: none;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 376px) {
+  .ToDoApp {
+    header {
+      height: 150px;
+      img {
+        margin-bottom: 24px;
+      }
+    }
+    .main-container {
+      .content {
+        bottom: 61px;
+      }
+    }
+    footer {
+      bottom: 60px;
     }
   }
 }

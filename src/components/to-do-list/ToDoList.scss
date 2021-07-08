@@ -11,7 +11,7 @@
     .title {
       font-size: 24px;
       text-align: center;
-      margin: 30px;
+      margin: 30px 40px;
       color: #191847;
       line-height: 29px;
     }
@@ -34,5 +34,31 @@
       width: -webkit-fill-available;
       margin: 0px;
     }
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .ToDoList {
+    .list-header {
+      .title {
+        margin: 24px 40px 20px 40px;
+      }
+      .empty-list-illust {
+        width: 244px;
+        height: 115px;
+        margin-bottom: 30px;
+      }
+      .completed-list-illust {
+        width: 267px;
+        height: 112px;
+        margin-bottom: 30px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 376px) {
+  .ToDoList {
+    padding-bottom: 18px;
   }
 }

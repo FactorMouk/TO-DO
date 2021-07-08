@@ -133,6 +133,12 @@ class TaskItem extends React.Component {
                   e.target.value = val;
                   this.autoGrow();
                 }}
+                onBlur={() =>
+                  this.state.tempDescription === "" ||
+                  !this.state.tempDescription
+                    ? (this.inputText.style.height = "22px")
+                    : null
+                }
                 onKeyDown={(e) => this.checkCommand(e)}
                 placeholder={
                   this.props.listStatus === "empty"
