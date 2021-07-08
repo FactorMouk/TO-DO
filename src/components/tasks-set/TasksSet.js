@@ -32,8 +32,12 @@ class TasksSet extends React.Component {
         {!(
           this.props.setType === "pending" && this.props.tasks.length === 0
         ) && (
-          <p>
-            {this.props.setType == "pending" ? "Pendente " : "Feito "}
+          <p
+            className={
+              this.props.setType === "completed" ? "completed-title" : ""
+            }
+          >
+            {this.props.setType === "pending" ? "Pendente " : "Feito "}
             {this.props.tasks ? `(${this.props.tasks.length})` : "0"}
           </p>
         )}
