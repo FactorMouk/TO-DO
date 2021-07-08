@@ -9,3 +9,17 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.alert-confirm-main {
+  border-radius: 12px !important;
+  font-family: "Inter", sans-serif;
+  .alert-confirm-button.primary-button {
+    background: transparent !important;
+    border: 1px solid #2b44ff;
+    color: #2b44ff;
+  }
+  .alert-confirm-button.default-button {
+    background: transparent !important;
+    border: 1px solid #191847;
+  }
+}

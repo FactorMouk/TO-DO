@@ -1,56 +1,169 @@
+import React from "react";
 import "./TaskItem.scss";
 import editBlue from "./../../assets/icons/edit-blue.png";
 import deleteBlue from "./../../assets/icons/delete-blue.png";
+import { getFirebase } from "react-redux-firebase";
+import "react-alert-confirm/dist/index.css";
+import alertConfirm from "react-alert-confirm";
 
-function TaskItem(props) {
-  function autoGrow(event) {
-    event.target.style.height = "5px";
-    event.target.style.height = event.target.scrollHeight + 4 + "px";
+class TaskItem extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { tempDescription: this.props.description };
   }
-  return (
-    <div className="TaskItem">
-      <div
-        className={"task " + (props.taskType ? props.taskType + "-task" : "")}
-      >
-        <label className="checkbox">
-          <input
-            type="checkbox"
-            disabled={props.taskType ? false : true}
-            defaultChecked={
-              props.taskType && props.taskType === "completed" ? true : false
-            }
-          ></input>
-          <span className="label"></span>
-        </label>
-        <div className="input-text">
-          <textarea
-            onChange={autoGrow}
-            placeholder={
-              props.listStatus === "empty"
-                ? "Um passo de cada vez"
-                : props.listStatus === "pending"
-                ? "Cuidado com o Burnout, viu?"
-                : props.listStatus === "completed"
-                ? "Pera, tem mais uma coisa"
-                : ""
-            }
-            value={props.description}
-          ></textarea>
-          <div className="enter-label">Enter ↵</div>
+
+  componentDidUpdate() {
+    if (this.props.editing) {
+      this.inputText.focus();
+    }
+  }
+
+  autoGrow() {
+    this.inputText.style.height = "5px";
+    this.inputText.style.height = this.inputText.scrollHeight + 4 + "px";
+  }
+
+  updateTempDescription(event) {
+    this.setState({ tempDescription: event.target.value });
+  }
+
+  changeStatus() {
+    getFirebase()
+      .firestore()
+      .collection("tasks")
+      .doc(this.props.id)
+      .update({
+        status: this.props.taskType === "pending" ? 1 : 0,
+        updatedAt: new Date(),
+      });
+  }
+
+  checkCommand(event) {
+    if (event.keyCode === 13) {
+      event.preventDefault();
+      if (
+        this.state.tempDescription &&
+        !this.state.tempDescription.trim() !== ""
+      ) {
+        if (this.props.editing) {
+          this.editTask();
+        } else {
+          this.addTask();
+        }
+      }
+    }
+    if (event.keyCode === 27) {
+      this.props.changeEditable(false);
+      this.setState({ tempDescription: this.props.description });
+    }
+  }
+
+  resetInputText() {
+    this.setState({ tempDescription: "" });
+    this.inputText.style.height = "22px";
+  }
+
+  addTask() {
+    getFirebase().firestore().collection("tasks").add({
+      description: this.state.tempDescription,
+      status: 0,
+      updatedAt: new Date(),
+    });
+    this.resetInputText();
+  }
+
+  editTask() {
+    getFirebase().firestore().collection("tasks").doc(this.props.id).update({
+      description: this.state.tempDescription,
+      status: 0,
+    });
+    this.props.changeEditable(false);
+  }
+
+  deleteTask() {
+    alertConfirm({
+      title: "Você quer mesmo apagar essa tarefa?",
+      content: "Ela irá sumir para sempre.",
+      okText: "Sim, quero apagar.",
+      cancelText: "Não, mudei de ideia!",
+      onOk: () => {
+        getFirebase()
+          .firestore()
+          .collection("tasks")
+          .doc(this.props.id)
+          .delete();
+      },
+    });
+  }
+
+  render() {
+    return (
+      <div className="TaskItem">
+        <div
+          className={
+            "task " + (this.props.taskType ? this.props.taskType + "-task" : "")
+          }
+        >
+          <label className="checkbox">
+            <input
+              type="checkbox"
+              disabled={this.props.taskType ? false : true}
+              defaultChecked={
+                this.props.taskType && this.props.taskType === "completed"
+                  ? true
+                  : false
+              }
+              onClick={() => this.changeStatus()}
+            ></input>
+            <span className="label"></span>
+          </label>
+          {this.props.editable ? (
+            <div className="input-text">
+              <textarea
+                ref={(input) => {
+                  this.inputText = input;
+                }}
+                onChange={(e) => {
+                  this.autoGrow();
+                  this.updateTempDescription(e);
+                }}
+                onFocus={(e) => {
+                  var val = e.target.value;
+                  e.target.value = "";
+                  e.target.value = val;
+                  this.autoGrow();
+                }}
+                onKeyDown={(e) => this.checkCommand(e)}
+                placeholder={
+                  this.props.listStatus === "empty"
+                    ? "Um passo de cada vez"
+                    : this.props.listStatus === "pending"
+                    ? "Cuidado com o Burnout, viu?"
+                    : this.props.listStatus === "completed"
+                    ? "Pera, tem mais uma coisa"
+                    : ""
+                }
+                value={this.state.tempDescription}
+              ></textarea>
+              <div className="enter-label">Enter ↵</div>
+            </div>
+          ) : (
+            <div className="description">{this.props.description}</div>
+          )}
+          {this.props.taskType === "pending" && !this.props.editing && (
+            <div className="task-actions">
+              <button onClick={() => this.deleteTask()}>
+                <img src={deleteBlue}></img>
+              </button>
+              <button onClick={() => this.props.changeEditable(true)}>
+                <img src={editBlue}></img>
+              </button>
+            </div>
+          )}
         </div>
-        {props.taskType === "pending" && (
-          <div className="task-actions">
-            <button>
-              <img src={deleteBlue}></img>
-            </button>
-            <button>
-              <img src={editBlue}></img>
-            </button>
-          </div>
-        )}
       </div>
-    </div>
-  );
+    );
+  }
 }
 
 export default TaskItem;

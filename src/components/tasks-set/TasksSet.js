@@ -1,25 +1,46 @@
+import React from "react";
 import "./TasksSet.scss";
 import TaskItem from "./../task-item/TaskItem";
 
-function TasksSet(props) {
-  const tasksItems = props.tasks.map((task) => (
-    <TaskItem
-      key={task.id}
-      taskType={props.setType}
-      listStatus="empty"
-      description={task.description}
-    ></TaskItem>
-  ));
+class TasksSet extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { editingItem: null };
+  }
 
-  return (
-    <div className="TasksSet">
-      <p>
-        {props.setType == "pending" ? "Pendente" : "Feito"}
-        {props.tasks ? `(${props.tasks.length})` : "0"}
-      </p>
-      {tasksItems}
-    </div>
-  );
+  changeEditable(toEdit, id) {
+    this.setState({ editingItem: toEdit ? id : null });
+  }
+
+  tasksItems() {
+    return this.props.tasks.map((task) => (
+      <TaskItem
+        key={task.id}
+        id={task.id}
+        taskType={this.props.setType}
+        description={task.description}
+        editable={task.id === this.state.editingItem}
+        editing={task.id === this.state.editingItem}
+        changeEditable={(toEdit) => this.changeEditable(toEdit, task.id)}
+      ></TaskItem>
+    ));
+  }
+
+  render() {
+    return (
+      <div className="TasksSet">
+        {!(
+          this.props.setType === "pending" && this.props.tasks.length === 0
+        ) && (
+          <p>
+            {this.props.setType == "pending" ? "Pendente " : "Feito "}
+            {this.props.tasks ? `(${this.props.tasks.length})` : "0"}
+          </p>
+        )}
+        {this.tasksItems()}
+      </div>
+    );
+  }
 }
 
 export default TasksSet;
