@@ -43,7 +43,7 @@ class TaskItem extends React.Component {
       event.preventDefault();
       if (
         this.state.tempDescription &&
-        !this.state.tempDescription.trim() !== ""
+        this.state.tempDescription.split(" ").join("") !== ""
       ) {
         if (this.props.editing) {
           this.editTask();
@@ -65,7 +65,7 @@ class TaskItem extends React.Component {
 
   addTask() {
     getFirebase().firestore().collection("tasks").add({
-      description: this.state.tempDescription,
+      description: this.state.tempDescription.trim(),
       status: 0,
       updatedAt: new Date(),
     });
@@ -74,10 +74,13 @@ class TaskItem extends React.Component {
 
   editTask() {
     getFirebase().firestore().collection("tasks").doc(this.props.id).update({
-      description: this.state.tempDescription,
+      description: this.state.tempDescription.trim(),
       status: 0,
     });
     this.props.changeEditable(false);
+    this.setState((state) => ({
+      tempDescription: state.tempDescription.trim(),
+    }));
   }
 
   deleteTask() {
