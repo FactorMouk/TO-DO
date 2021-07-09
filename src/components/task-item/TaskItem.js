@@ -16,10 +16,8 @@ class TaskItem extends React.Component {
   }
 
   static getDerivedStateFromProps(props, currentState) {
-    if (
-      (props.changing || props.dragging || props.updating) &&
-      !currentState.edited
-    ) {
+    // Updates the current state when props changed
+    if (props.updating && !currentState.edited) {
       return {
         tempDescription: props.description,
         checked: props.checked,
@@ -49,18 +47,6 @@ class TaskItem extends React.Component {
 
   updateTempDescription(event) {
     this.setState({ tempDescription: event.target.value, edited: true });
-  }
-
-  changeStatus(e) {
-    this.setState({ checked: e.target.checked });
-    setTimeout(() => {
-      this.props.onChangeStatus(
-        {
-          description: this.props.description,
-        },
-        this.props.taskType === "pending" ? "completed" : "pending"
-      );
-    }, 200);
   }
 
   checkCommand(event) {
@@ -120,6 +106,18 @@ class TaskItem extends React.Component {
         this.props.onDelete();
       },
     });
+  }
+
+  changeStatus(e) {
+    this.setState({ checked: e.target.checked });
+    setTimeout(() => {
+      this.props.onChangeStatus(
+        {
+          description: this.props.description,
+        },
+        this.props.taskType === "pending" ? "completed" : "pending"
+      );
+    }, 200);
   }
 
   render() {

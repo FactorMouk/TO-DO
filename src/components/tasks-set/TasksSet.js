@@ -2,7 +2,12 @@ import React from "react";
 import "./TasksSet.scss";
 import TaskItem from "./../task-item/TaskItem";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { getFirebase } from "react-redux-firebase";
+import {
+  onEditTask,
+  onDeleteTask,
+  onChangePositionTask,
+} from "../../facades/tasksFacade";
+import { arrayMove } from "../../utils/funcUtils";
 class TasksSet extends React.Component {
   constructor(props) {
     super(props);
@@ -10,12 +15,12 @@ class TasksSet extends React.Component {
       editingItem: null,
       currentTasks: this.props.tasks,
       updating: false,
-      changing: false,
       dragging: false,
     };
   }
 
   static getDerivedStateFromProps(props, currentState) {
+    // Updates the current state when props changed
     if (currentState.currentTasks !== props.tasks && !currentState.dragging) {
       return {
         currentTasks: props.tasks,
@@ -25,7 +30,7 @@ class TasksSet extends React.Component {
   }
 
   componentWillUnmount() {
-    // fix Warning: Can't perform a React state update on an unmounted component
+    // Fix Warning: Can't perform a React state update on an unmounted component
     this.setState = () => {
       return;
     };
@@ -41,21 +46,30 @@ class TasksSet extends React.Component {
 
   onDragEnd(result) {
     if (result.source && result.destination) {
-      let newArray = this.arrayMove(
+      let newArray = arrayMove(
         this.state.currentTasks,
         result.source.index,
         result.destination.index
       );
       this.setState({ currentTasks: newArray });
-      getFirebase()
-        .firestore()
-        .collection("tasks")
-        .doc("list")
-        .update({
-          [this.props.setType]: newArray,
-        })
-        .then(() => setTimeout(this.setState({ dragging: false }), 1000));
+      onChangePositionTask(this.props.setType, newArray).then(() =>
+        setTimeout(this.setState({ dragging: false }), 1000)
+      );
     }
+  }
+
+  onEdit(data, index) {
+    let auxArray = JSON.parse(JSON.stringify(this.state.currentTasks));
+    auxArray[index] = data;
+    this.setState({ currentTasks: auxArray, updating: true });
+    return onEditTask(auxArray).then(() => this.setState({ updating: false }));
+  }
+
+  onDelete(index) {
+    let auxArray = JSON.parse(JSON.stringify(this.state.currentTasks));
+    auxArray.splice(index, 1);
+    this.setState({ currentTasks: auxArray, updating: true });
+    onDeleteTask.then(() => this.setState({ updating: false }));
   }
 
   onChangeStatus(data, index, to) {
@@ -63,46 +77,11 @@ class TasksSet extends React.Component {
     auxArray.splice(index, 1);
     this.setState({
       currentTasks: auxArray,
-      changing: true,
+      updating: true,
     });
     this.props
       .onChangeStatus(data, auxArray, to)
-      .then(() => this.setState({ changing: false }));
-  }
-
-  onEdit(data, index) {
-    let auxArray = JSON.parse(JSON.stringify(this.state.currentTasks));
-    auxArray[index] = data;
-    this.setState({ currentTasks: auxArray, updating: true });
-    return getFirebase()
-      .firestore()
-      .collection("tasks")
-      .doc("list")
-      .update({
-        pending: auxArray,
-      })
       .then(() => this.setState({ updating: false }));
-  }
-
-  onDelete(index) {
-    let auxArray = JSON.parse(JSON.stringify(this.state.currentTasks));
-    auxArray.splice(index, 1);
-    this.setState({ currentTasks: auxArray, changing: true });
-    getFirebase()
-      .firestore()
-      .collection("tasks")
-      .doc("list")
-      .update({
-        pending: auxArray,
-      })
-      .then(() => this.setState({ changing: false }));
-  }
-
-  arrayMove(arr, startIndex, endIndex) {
-    const result = Array.from(arr);
-    const [removed] = result.splice(startIndex, 1);
-    result.splice(endIndex, 0, removed);
-    return result;
   }
 
   tasksItems() {
@@ -125,7 +104,6 @@ class TasksSet extends React.Component {
               editable={index === this.state.editingItem}
               editing={index === this.state.editingItem}
               updating={this.state.updating}
-              changing={this.state.changing}
               dragging={this.state.dragging}
               checked={this.props.setType === "pending" ? false : true}
               changeEditable={(toEdit) => this.changeEditable(toEdit, index)}

@@ -3,10 +3,9 @@ import emptyListIllust from "./../../assets/imgs/empty-list-illust.png";
 import completedListIllust from "./../../assets/imgs/completed-list-illust.png";
 import TasksSet from "./../tasks-set/TasksSet";
 import TaskItem from "./../task-item/TaskItem";
-import firebase from "firebase/app";
-import { getFirebase } from "react-redux-firebase";
 import { useSelector } from "react-redux";
 import { useFirestoreConnect } from "react-redux-firebase";
+import { onAddTask, onChangeStatusTask } from "../../facades/tasksFacade";
 
 function ToDoList() {
   useFirestoreConnect([
@@ -31,31 +30,13 @@ function ToDoList() {
   };
 
   let onChangeStatus = (data, newArray, from, to) => {
-    return getFirebase()
-      .firestore()
-      .collection("tasks")
-      .doc("list")
-      .update({
-        [from]: newArray,
-        [to]:
-          to === "pending"
-            ? firebase.firestore.FieldValue.arrayUnion(data)
-            : arrayPrepend(data, JSON.parse(JSON.stringify(completedTasks()))),
-      });
+    return onChangeStatusTask(data, newArray, from, to, completedTasks());
   };
 
   let onAdd = (data) => {
     let auxArray = JSON.parse(JSON.stringify(pendingTasks()));
     auxArray.push(data);
-    getFirebase().firestore().collection("tasks").doc("list").update({
-      pending: auxArray,
-    });
-  };
-
-  let arrayPrepend = (value, array) => {
-    var newArray = array.slice();
-    newArray.unshift(value);
-    return newArray;
+    onAddTask(auxArray);
   };
 
   return (
