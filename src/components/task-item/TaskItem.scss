@@ -104,7 +104,7 @@
       }
     }
   }
-  .pending-task:hover {
+  .task:hover {
     background-color: #f2f2f2;
   }
   .completed-task {
@@ -113,7 +113,7 @@
         border: 1px solid #2b44ff;
         background: url("./../../assets/icons/check-blue.png") no-repeat center
             center,
-          white;
+          transparent;
         transition: none;
       }
     }
