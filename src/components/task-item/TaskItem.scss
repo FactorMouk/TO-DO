@@ -5,6 +5,7 @@
     align-items: center;
     margin-bottom: 4px;
     padding: 8px 28px;
+    background-color: white;
     .checkbox {
       margin-right: 14px;
       width: 28px;
@@ -22,6 +23,7 @@
         background: url("./../../assets/icons/check-white.png") no-repeat center
             center,
           #2b44ff;
+        transition: all 0.1s ease;
       }
       .label {
         border: 1px solid #191847;
@@ -112,6 +114,7 @@
         background: url("./../../assets/icons/check-blue.png") no-repeat center
             center,
           white;
+        transition: none;
       }
     }
     .description {

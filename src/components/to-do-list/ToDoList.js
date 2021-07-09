@@ -3,6 +3,8 @@ import emptyListIllust from "./../../assets/imgs/empty-list-illust.png";
 import completedListIllust from "./../../assets/imgs/completed-list-illust.png";
 import TasksSet from "./../tasks-set/TasksSet";
 import TaskItem from "./../task-item/TaskItem";
+import firebase from "firebase/app";
+import { getFirebase } from "react-redux-firebase";
 import { useSelector } from "react-redux";
 import { useFirestoreConnect } from "react-redux-firebase";
 
@@ -10,42 +12,57 @@ function ToDoList() {
   useFirestoreConnect([
     {
       collection: "tasks",
-      where: ["status", "==", 0],
-      orderBy: ["updatedAt", "asc"],
-      storeAs: "pendingTasks",
-    },
-    {
-      collection: "tasks",
-      where: ["status", "==", 1],
-      orderBy: ["updatedAt", "desc"],
-      storeAs: "completedTasks",
     },
   ]);
 
-  const pendingTasks = useSelector(
-    (state) => state.firestore.ordered["pendingTasks"]
-  );
+  const tasks = useSelector((state) => state.firestore.data["tasks"]);
 
-  const completedTasks = useSelector(
-    (state) => state.firestore.ordered["completedTasks"]
-  );
+  let pendingTasks = () => (tasks ? tasks.list.pending : []);
+  let completedTasks = () => (tasks ? tasks.list.completed : []);
 
   let listStatus = () => {
-    if (pendingTasks && completedTasks) {
-      if (pendingTasks.length === 0 && completedTasks.length === 0)
+    if (tasks) {
+      if (pendingTasks().length === 0 && completedTasks().length === 0)
         return "empty";
-      else if (pendingTasks.length > 0) return "pending";
-      else if (pendingTasks.length === 0 && completedTasks.length !== 0)
+      else if (pendingTasks().length > 0) return "pending";
+      else if (pendingTasks().length === 0 && completedTasks().length !== 0)
         return "completed";
     }
   };
 
+  let onChangeStatus = (data, newArray, from, to) => {
+    return getFirebase()
+      .firestore()
+      .collection("tasks")
+      .doc("list")
+      .update({
+        [from]: newArray,
+        [to]:
+          to === "pending"
+            ? firebase.firestore.FieldValue.arrayUnion(data)
+            : arrayPrepend(data, JSON.parse(JSON.stringify(completedTasks()))),
+      });
+  };
+
+  let onAdd = (data) => {
+    let auxArray = JSON.parse(JSON.stringify(pendingTasks()));
+    auxArray.push(data);
+    getFirebase().firestore().collection("tasks").doc("list").update({
+      pending: auxArray,
+    });
+  };
+
+  let arrayPrepend = (value, array) => {
+    var newArray = array.slice();
+    newArray.unshift(value);
+    return newArray;
+  };
+
   return (
     <div className="ToDoList">
-      {(pendingTasks &&
-        completedTasks &&
-        pendingTasks.length === 0 &&
-        completedTasks.length === 0 && (
+      {(tasks &&
+        pendingTasks().length === 0 &&
+        completedTasks().length === 0 && (
           <div className="list-header">
             <p className="title">Nenhuma tarefa criada ainda.</p>
             <img className="empty-list-illust" src={emptyListIllust}></img>
@@ -54,10 +71,9 @@ function ToDoList() {
             </p>
           </div>
         )) ||
-        (pendingTasks &&
-          completedTasks &&
-          pendingTasks.length === 0 &&
-          completedTasks.length !== 0 && (
+        (tasks &&
+          pendingTasks().length === 0 &&
+          completedTasks().length !== 0 && (
             <div className="list-header">
               <p className="title">Tudo pronto!</p>
               <img
@@ -69,17 +85,27 @@ function ToDoList() {
               </p>
             </div>
           ))}
-      {pendingTasks && pendingTasks.length > 0 && (
+      {tasks && pendingTasks().length > 0 && (
         <TasksSet
           setType="pending"
-          tasks={pendingTasks ? pendingTasks : []}
+          tasks={pendingTasks()}
+          onChangeStatus={(data, newArray, to) =>
+            onChangeStatus(data, newArray, "pending", to)
+          }
         ></TasksSet>
       )}
-      <TaskItem editable="true" listStatus={listStatus()}></TaskItem>
-      {completedTasks && completedTasks.length > 0 && (
+      <TaskItem
+        onAdd={(data) => onAdd(data)}
+        editable="true"
+        listStatus={listStatus()}
+      ></TaskItem>
+      {tasks && completedTasks().length > 0 && (
         <TasksSet
           setType="completed"
-          tasks={completedTasks ? completedTasks : []}
+          tasks={completedTasks()}
+          onChangeStatus={(data, newArray, to) =>
+            onChangeStatus(data, newArray, "completed", to)
+          }
         ></TasksSet>
       )}
     </div>
