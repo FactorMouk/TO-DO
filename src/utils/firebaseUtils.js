@@ -1,5 +1,8 @@
 import firebase from "firebase/app";
 import "firebase/firestore";
+import "firebase/auth";
+import "firebase/database";
+import { getFirebase } from "react-redux-firebase";
 import { Store } from "../store";
 import { createFirestoreInstance } from "redux-firestore";
 
@@ -12,7 +15,20 @@ firebase.initializeApp({
   appId: "1:641365083878:web:ef0c3ce5f1dd487a6b9d27",
   measurementId: "G-BCC47MBB8W",
 });
+
 firebase.firestore();
+
+firebase
+  .auth()
+  .signInAnonymously()
+  .then((user) => {
+    if (!getFirebase().firestore().collection("tasks").doc(user.user.uid))
+      getFirebase()
+        .firestore()
+        .collection("tasks")
+        .doc(user.user.uid)
+        .set({ pending: [], completed: [] });
+  });
 
 const rrfConfig = {
   userProfile: "users",

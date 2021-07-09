@@ -1,4 +1,6 @@
 import "./ToDoList.scss";
+import firebase from "firebase/app";
+import "firebase/auth";
 import emptyListIllust from "./../../assets/imgs/empty-list-illust.png";
 import completedListIllust from "./../../assets/imgs/completed-list-illust.png";
 import TasksSet from "./../tasks-set/TasksSet";
@@ -16,8 +18,10 @@ function ToDoList() {
 
   const tasks = useSelector((state) => state.firestore.data["tasks"]);
 
-  let pendingTasks = () => (tasks ? tasks.list.pending : []);
-  let completedTasks = () => (tasks ? tasks.list.completed : []);
+  let pendingTasks = () =>
+    tasks ? tasks[firebase.auth().currentUser.uid].pending : [];
+  let completedTasks = () =>
+    tasks ? tasks[firebase.auth().currentUser.uid].completed : [];
 
   let listStatus = () => {
     if (tasks) {
