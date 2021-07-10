@@ -139,13 +139,7 @@ class TaskItem extends React.Component {
                   ? this.props.taskType + this.props.id + "Checkbox"
                   : "addCheckbox"
               }
-              disabled={
-                this.props.taskType
-                  ? this.props.updating || this.props.editing
-                    ? true
-                    : false
-                  : true
-              }
+              disabled={this.props.taskType ? this.props.checkDisable : true}
               checked={this.state.checked ? this.state.checked : false}
               onChange={(e) => this.changeStatus(e)}
             ></input>

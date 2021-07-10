@@ -45,7 +45,11 @@ class TasksSet extends React.Component {
   }
 
   onDragEnd(result) {
-    if (result.source && result.destination) {
+    if (
+      result.source &&
+      result.destination &&
+      this.state.editingItem === null
+    ) {
       let newArray = arrayMove(
         this.state.currentTasks,
         result.source.index,
@@ -55,6 +59,8 @@ class TasksSet extends React.Component {
       onChangePositionTask(this.props.setType, newArray).then(() =>
         setTimeout(this.setState({ dragging: false }), 1000)
       );
+    } else {
+      this.setState({ dragging: false });
     }
   }
 
@@ -106,6 +112,9 @@ class TasksSet extends React.Component {
               updating={this.state.updating}
               dragging={this.state.dragging}
               checked={this.props.setType === "pending" ? false : true}
+              checkDisable={
+                this.state.updating || this.state.editingItem !== null
+              }
               changeEditable={(toEdit) => this.changeEditable(toEdit, index)}
               onChangeStatus={(data, to) =>
                 this.onChangeStatus(data, index, to)
@@ -139,7 +148,12 @@ class TasksSet extends React.Component {
           onDragStart={() => this.onDragStart()}
           onDragEnd={(e) => this.onDragEnd(e)}
         >
-          <Droppable droppableId={this.props.setType + "-droppable"}>
+          <Droppable
+            droppableId={this.props.setType + "-droppable"}
+            isDropDisabled={
+              this.state.updating || this.state.editingItem !== null
+            }
+          >
             {(provided) => (
               <div {...provided.droppableProps} ref={provided.innerRef}>
                 {this.tasksItems()}
