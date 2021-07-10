@@ -19,9 +19,17 @@ function ToDoList() {
   const tasks = useSelector((state) => state.firestore.data["tasks"]);
 
   let pendingTasks = () =>
-    tasks ? tasks[firebase.auth().currentUser.uid].pending : [];
+    tasks && firebase.auth().currentUser
+      ? tasks[firebase.auth().currentUser.uid]
+        ? tasks[firebase.auth().currentUser.uid].pending
+        : []
+      : [];
   let completedTasks = () =>
-    tasks ? tasks[firebase.auth().currentUser.uid].completed : [];
+    tasks && firebase.auth().currentUser
+      ? tasks[firebase.auth().currentUser.uid]
+        ? tasks[firebase.auth().currentUser.uid].completed
+        : []
+      : [];
 
   let listStatus = () => {
     if (tasks) {

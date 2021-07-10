@@ -22,12 +22,22 @@ firebase
   .auth()
   .signInAnonymously()
   .then((user) => {
-    if (!getFirebase().firestore().collection("tasks").doc(user.user.uid))
-      getFirebase()
+    if (
+      !getFirebase()
         .firestore()
         .collection("tasks")
         .doc(user.user.uid)
-        .set({ pending: [], completed: [] });
+        .get()
+        .then((data) => {
+          if (!data.exists) {
+            getFirebase()
+              .firestore()
+              .collection("tasks")
+              .doc(user.user.uid)
+              .set({ pending: [], completed: [] });
+          }
+        })
+    );
   });
 
 const rrfConfig = {
