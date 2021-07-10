@@ -11,15 +11,14 @@
       width: 28px;
       height: 28px;
       cursor: pointer;
-      .non-clickable-input {
-        pointer-events: none;
-      }
+      // .non-clickable-input {
+      //   pointer-events: none;
+      // }
       > input {
         display: none;
       }
       > input:disabled + .label {
         opacity: 0.4;
-        transition: all 0.2s ease;
       }
       > input:checked + .label {
         border: 1px solid #2b44ff;
@@ -27,7 +26,7 @@
         background: url("./../../assets/icons/check-white.png") no-repeat center
             center,
           #2b44ff;
-        transition: all 0.2s ease;
+        transition: all 0.1s ease;
       }
       .label {
         border: 1px solid #191847;
@@ -51,7 +50,7 @@
         overflow: hidden;
         padding: 0px;
         border: none;
-        border-bottom: 1px solid rgba(25, 24, 71, 0.24);
+        border-bottom: 1px solid rgba(25, 24, 71, 0.14);
         font-size: 16px;
         line-height: 19px;
         font-family: "Inter", sans-serif;
@@ -114,9 +113,6 @@
   }
   .completed-task {
     .checkbox {
-      > input + .label {
-        transition: all 0.2s ease;
-      }
       > input:checked + .label {
         border: 1px solid #2b44ff;
         background: url("./../../assets/icons/check-blue.png") no-repeat center

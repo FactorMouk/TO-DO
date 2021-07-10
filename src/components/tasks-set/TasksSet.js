@@ -73,7 +73,7 @@ class TasksSet extends React.Component {
   }
 
   onChangeStatus(data, index, to) {
-    this.setState({ updating: true });
+    this.setState({ updating: true, editingItem: null });
     let auxArray = JSON.parse(JSON.stringify(this.state.currentTasks));
     auxArray.splice(index, 1);
     this.setState({

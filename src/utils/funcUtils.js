@@ -1,3 +1,9 @@
+export const arrayAppend = (value, array) => {
+  var newArray = array;
+  newArray.push(value);
+  return newArray;
+};
+
 export const arrayPrepend = (value, array) => {
   var newArray = array.slice();
   newArray.unshift(value);

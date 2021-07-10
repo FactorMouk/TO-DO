@@ -118,9 +118,7 @@ class TaskItem extends React.Component {
           },
           this.props.taskType === "pending" ? "completed" : "pending"
         );
-      }, 200);
-    } else {
-      e.preventDefault();
+      }, 100);
     }
   }
 

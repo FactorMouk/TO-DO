@@ -23,9 +23,17 @@ export function onChangeStatusTask(
   newArray,
   from,
   to,
+  pendingCompletedTasks,
   currentCompletedTasks
 ) {
-  return changeStatusTask(task, newArray, from, to, currentCompletedTasks);
+  return changeStatusTask(
+    task,
+    newArray,
+    from,
+    to,
+    pendingCompletedTasks,
+    currentCompletedTasks
+  );
 }
 
 export function onChangePositionTask(setType, newArray) {

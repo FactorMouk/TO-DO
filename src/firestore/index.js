@@ -1,7 +1,7 @@
 import firebase from "firebase/app";
 import "firebase/auth";
 import { getFirebase } from "react-redux-firebase";
-import { arrayPrepend } from "../utils/funcUtils";
+import { arrayAppend, arrayPrepend } from "../utils/funcUtils";
 
 export const addTask = (newPendingTasksArray) => {
   return getFirebase()
@@ -38,6 +38,7 @@ export const changeStatusTask = (
   newArray,
   from,
   to,
+  currentPendingTasks,
   currentCompletedTasks
 ) => {
   return getFirebase()
@@ -48,7 +49,7 @@ export const changeStatusTask = (
       [from]: newArray,
       [to]:
         to === "pending"
-          ? firebase.firestore.FieldValue.arrayUnion(data)
+          ? arrayAppend(data, JSON.parse(JSON.stringify(currentPendingTasks)))
           : arrayPrepend(
               data,
               JSON.parse(JSON.stringify(currentCompletedTasks))

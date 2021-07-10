@@ -42,7 +42,14 @@ function ToDoList() {
   };
 
   let onChangeStatus = (data, newArray, from, to) => {
-    return onChangeStatusTask(data, newArray, from, to, completedTasks());
+    return onChangeStatusTask(
+      data,
+      newArray,
+      from,
+      to,
+      pendingTasks(),
+      completedTasks()
+    );
   };
 
   let onAdd = (data) => {
