@@ -73,11 +73,11 @@ class TasksSet extends React.Component {
   }
 
   onChangeStatus(data, index, to) {
+    this.setState({ updating: true });
     let auxArray = JSON.parse(JSON.stringify(this.state.currentTasks));
     auxArray.splice(index, 1);
     this.setState({
       currentTasks: auxArray,
-      updating: true,
     });
     this.props
       .onChangeStatus(data, auxArray, to)

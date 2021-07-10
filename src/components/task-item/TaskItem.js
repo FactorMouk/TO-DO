@@ -109,15 +109,19 @@ class TaskItem extends React.Component {
   }
 
   changeStatus(e) {
-    this.setState({ checked: e.target.checked });
-    setTimeout(() => {
-      this.props.onChangeStatus(
-        {
-          description: this.props.description,
-        },
-        this.props.taskType === "pending" ? "completed" : "pending"
-      );
-    }, 200);
+    if (!this.props.updating) {
+      this.setState({ checked: e.target.checked });
+      setTimeout(() => {
+        this.props.onChangeStatus(
+          {
+            description: this.props.description,
+          },
+          this.props.taskType === "pending" ? "completed" : "pending"
+        );
+      }, 200);
+    } else {
+      e.preventDefault();
+    }
   }
 
   render() {
@@ -131,12 +135,19 @@ class TaskItem extends React.Component {
           <label className="checkbox">
             <input
               type="checkbox"
+              className={this.props.updating ? "non-clickable-input" : ""}
               name={
                 this.props.taskType
                   ? this.props.taskType + this.props.id + "Checkbox"
                   : "addCheckbox"
               }
-              disabled={this.props.taskType ? false : true}
+              disabled={
+                this.props.taskType
+                  ? this.props.updating || this.props.editing
+                    ? true
+                    : false
+                  : true
+              }
               checked={this.state.checked ? this.state.checked : false}
               onChange={(e) => this.changeStatus(e)}
             ></input>
