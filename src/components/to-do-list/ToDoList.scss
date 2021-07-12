@@ -25,6 +25,15 @@
       height: 186px;
       margin-bottom: 48px;
     }
+    .loading-list-illust {
+      width: 350px;
+      height: 250px;
+      margin-bottom: 48px;
+    }
+    .loading-bubbles {
+      bottom: 50px;
+      position: relative;
+    }
     .sub-title {
       color: #191847;
       font-size: 16px;
@@ -51,6 +60,11 @@
       .completed-list-illust {
         width: 267px;
         height: 112px;
+        margin-bottom: 30px;
+      }
+      .loading-list-illust {
+        width: 200px;
+        height: 150px;
         margin-bottom: 30px;
       }
     }

@@ -1,8 +1,10 @@
 import "./ToDoList.scss";
 import firebase from "firebase/app";
 import "firebase/auth";
+import ReactLoading from "react-loading";
 import emptyListIllust from "./../../assets/imgs/empty-list-illust.png";
 import completedListIllust from "./../../assets/imgs/completed-list-illust.png";
+import loadingListIllust from "./../../assets/imgs/loading-list-illust.png";
 import TasksSet from "./../tasks-set/TasksSet";
 import TaskItem from "./../task-item/TaskItem";
 import { useSelector } from "react-redux";
@@ -84,7 +86,21 @@ function ToDoList() {
                 Sensação de dever cumprido. Que tal um café agora?
               </p>
             </div>
-          ))}
+          )) ||
+        (!tasks && (
+          <div className="list-header">
+            <p className="title">Bem-vindo(a) de volta!</p>
+            <img className="loading-list-illust" src={loadingListIllust}></img>
+            <div className="loading-bubbles">
+              <ReactLoading
+                type={"balls"}
+                color={"#191847"}
+                height={70}
+                width={100}
+              />
+            </div>
+          </div>
+        ))}
       {tasks && pendingTasks().length > 0 && (
         <TasksSet
           setType="pending"
@@ -94,11 +110,13 @@ function ToDoList() {
           }
         ></TasksSet>
       )}
-      <TaskItem
-        onAdd={(data) => onAdd(data)}
-        editable="true"
-        listStatus={listStatus()}
-      ></TaskItem>
+      {tasks && (
+        <TaskItem
+          onAdd={(data) => onAdd(data)}
+          editable="true"
+          listStatus={listStatus()}
+        ></TaskItem>
+      )}
       {tasks && completedTasks().length > 0 && (
         <TasksSet
           setType="completed"
