@@ -61,6 +61,7 @@ class TaskItem extends React.Component {
         } else {
           this.addTask();
         }
+        this.inputText.blur();
       }
     }
     if (event.keyCode === 27 && this.props.editing) {
