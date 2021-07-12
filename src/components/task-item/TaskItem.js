@@ -50,7 +50,7 @@ class TaskItem extends React.Component {
   }
 
   checkCommand(event) {
-    if (event.keyCode === 13) {
+    if (event.keyCode == 10 || event.keyCode === 13) {
       event.preventDefault();
       if (
         this.state.tempDescription &&
