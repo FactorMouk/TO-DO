@@ -66,6 +66,7 @@ class TaskItem extends React.Component {
     if (event.keyCode === 27 && this.props.editing) {
       this.comeBackToOriginal();
     }
+    return false;
   }
 
   comeBackToOriginal() {
