@@ -1,7 +1,7 @@
 {
   "name": "TO-DO App",
   "short_name": "TO-DO App",
-  "theme_color": "#191847",
+  "theme_color": "#dde3e9",
   "background_color": "#dde3e9",
   "display": "standalone",
   "scope": "/",
