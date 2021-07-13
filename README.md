@@ -91,7 +91,7 @@ Por último, a última e mais recente versão conta com a funcionalidade extra d
 
 ## Deploy
 
-A aplicação está rodando em produção neste link: [to-do-app-guava.herokuapp.com](to-do-app-guava.herokuapp.com).
+A aplicação está rodando em produção neste link: [https://to-do-app-guava.herokuapp.com](https://to-do-app-guava.herokuapp.com).
 O container Heroku está configurado para build e deploy automático a cada novo commit na branch `main`.
 
 Caso acesse este link, tenha em vista que, por ser um container gratuito, o primeiro carregamento pode demorar um pouco, pois o Heroku "adormece" um container que passou certo tempo sem ser utilizado. Tal demora não tem conexão direta com o desempenho do aplicativo.
@@ -111,7 +111,7 @@ Segue abaixo o resultado para Mobile:
 
 ## PWA
 
-Como citado anteriormente, o aplicativo está com a funcionalidade de PWA operante. Para testá-la, acesse [este link](to-do-app-guava.herokuapp.com) através de um dispositivo móvel e adicione a aplicação em sua tela inicial.
+Como citado anteriormente, o aplicativo está com a funcionalidade de PWA operante. Para testá-la, acesse [este link](https://to-do-app-guava.herokuapp.com) através de um dispositivo móvel e adicione a aplicação em sua tela inicial.
 
 O service worker configurado guarda em cache os arquivos JS e imagens necessários para o funcionamento do aplicativo. Caso o dispositivo móvel perca conexão com a internet, ainda assim a página principal será mostrada com o loading rodando normalmente. Obviamente, nada será mostrado além disso, exceto uma mensagem de "Está demorando mais do que o normal..." após vinte segundos sem nenhuma resposta do back-end.
 
