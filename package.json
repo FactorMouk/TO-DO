@@ -1,6 +1,6 @@
 {
   "name": "to-dos-app",
-  "version": "1.0.0",
+  "version": "1.4.0",
   "private": true,
   "engines": {
     "npm": "7.19.1",
