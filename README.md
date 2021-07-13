@@ -79,6 +79,8 @@ A estrutura atual do projeto não foi a primeira a ser utilizada, mas como é a 
 * `store`: Contém o arquivo de configuração da Store da aplicação ;
 * `utils`: Contém arquivos JS auxiliares para a aplicação.
 
+O fluxo de negócio é bem simples: um componente que deseja realizar uma ação chama a função associada no facade, que chama uma outra função que se conecta com a API através da biblioteca do firebase, realizando a ação solicitada.
+
 Seguindo o roteiro das features designadas, a primeira versão do projeto apresentava apenas tais funcionalidades, exceto a autenticação por browser.
 
 A segunda versão contava com a funcionaliade extra de Drag and Drop para a ordenação customizada das tarefas, bem como a autenticação por browser.
@@ -113,9 +115,9 @@ Como citado anteriormente, o aplicativo está com a funcionalidade de PWA operan
 
 O service worker configurado guarda em cache os arquivos JS e imagens necessários para o funcionamento do aplicativo. Caso o dispositivo móvel perca conexão com a internet, ainda assim a página principal será mostrada com o loading rodando normalmente. Obviamente, nada será mostrado além disso, exceto uma mensagem de "Está demorando mais do que o normal..." após vinte segundos sem nenhuma resposta do back-end.
 
-## Testes de responvidade, em dispositivos mobile e em browsers antigos
+## Testes de responsividade, em dispositivos mobile e em browsers antigos
 
-Para testes de responsividade, foi utilizado o DevTools do Google Chrome. A responsividade fica excelente até nas menores resoluções de tela registradas (IPhone 5E), independente de ser em modo retrato ou paisagem.
+Para testes de responsividade, foi utilizado o DevTools do Google Chrome. A responsividade fica excelente até nas menores resoluções de tela registradas (IPhone 5/SE), independente de ser em modo retrato ou paisagem.
 
 Os testes em dispositivos mobile foram um sucesso, com a responsividade funcionando da mesma forma que no DevTools. 
 Contudo, um pequeno "bug" foi encontrado em dispositivos Motorola e Xiaomi. Ao estar editando ou adicionando uma nova tarefa, é necessário apertar duas vezes na tecla Enter para que as modificações ou a adição seja realizada, pois o primeiro Enter sempre é reconhecido como quebra de linha. Os testes só detectaram tal "bug" nos dispositivos destas marcas. Através de algumas pesquisas, foi percebido que de fato esta é uma situação específica dos teclados virtuais destas marcas, e não um erro de implementação do código. Para o teste de fogo, foi realizado um teste bem simples. Abriu-se o [Google Keep](www.keep.google.com) em um destes dispositivos, pois esta aplicação também apresenta a funcionalidade de "event.preventDefault()" para adicionar uma nova nota ao clicar em Enter, e percebeu-se que o mesmo "bug" ocorre.
@@ -124,7 +126,16 @@ Para testes em browsers antigos (de até três anos atrás), foi utilizada a fer
 
 <img src="https://drive.google.com/uc?export=view&id=13oXECP5C7IKAm6QTo7q8VBbORCJsgeMb">
 
-Alguns ajustes foram realizados após tais testes, especialmente nas folhas de estilo, mas nada grande. No geral, as funcionalidades permaneceram as mesmas independente do navegador. A única excessão foi ao IE11 (lançado em 2013), que não apresentou a página. Através de algumas pesquisas foi percebido que, de fato, tal navegador tem certos problemas com aplicações React.
+Alguns ajustes foram realizados após tais testes, especialmente nas folhas de estilo, mas nada muito grande. No geral, as funcionalidades permaneceram as mesmas, independente do navegador. A única excessão foi ao IE11 (lançado em 2013), que não apresentou a página. Através de algumas pesquisas foi percebido que, de fato, tal navegador tem certos problemas com aplicações React.
 
 ## Considerações gerais do desenvolvedor
 
+Este foi um projeto que, embora aparente ser bastante simples, foi bastante desafiador para mim, pois eu estava de certa forma acostumado com a minha "zona de conforto" no Angular. Porém, por desafiador não entenda-se "frustrante", pois a sensação que tenho ao terminar este projeto é de que, embora um pouco novato no React, consegui evoluir bastante bem em uma semana, entregando uma aplicação funcional.
+
+De certa forma, o uso do Redux e do Firebase não foram escolhas sem nenhum crivo, pois já utilizara o NgRx (o Redux do Angular) em meus projetos e já estava acostumado com o ambiente Firebase. Diria que a integração com o React, através de suas peculiaridades como os Hooks, foi o maior desafio neste âmbito.
+
+O "bug" do Enter citado acima foi uma dor de cabeça por algum tempo, até que tive a ideia de comparar com uma aplicação do Google (até porque, se em uma aplicação do Google também está assim, então com certeza os teclados destes dispositivos especificados funcionam realmente de maneira diferente, não é mesmo? kkkkk). 
+
+Por fim, gostaria de admitir minha leicidade em melhores estruturas de projeto para React, especialmente por estar começando a usar mais tal framework apenas recentemente. Estou completamente aberto a sugestões e comentários sobre o código :D, pois tenho absoluta certeza que muitas coisas poderiam ter sido feitas de maneira melhor (kkkk).
+
+Contudo, me sinto realizado com tal projeto, e estou bastante estimulado a estudar e aprender cada vez mais sobre React. Espero que gostem da aplicaçãp e a usem bastante! (Sou um pouco ruim com listas, mas quem sabe eu também não comece a usar? hahah)
