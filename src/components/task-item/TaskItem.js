@@ -190,16 +190,20 @@ class TaskItem extends React.Component {
           )}
           {this.props.taskType === "pending" && !this.props.editing && (
             <div className="task-actions">
-              <button onClick={() => this.deleteTask()}>
-                <img src={deleteBlue}></img>
+              <button
+                aria-label="deleteButton"
+                onClick={() => this.deleteTask()}
+              >
+                <img src={deleteBlue} alt="deleteButton"></img>
               </button>
               <button
+                aria-label="editButton"
                 onClick={() => {
                   this.setState({ tempDescription: this.props.description });
                   this.props.changeEditable(true);
                 }}
               >
-                <img src={editBlue}></img>
+                <img src={editBlue} alt="editButton"></img>
               </button>
             </div>
           )}
